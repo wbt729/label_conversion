@@ -1,0 +1,19 @@
+{
+  "source_directory": "/home/npc/Playground/affan_yolo_tutorial/Converter/foreign_dataset",
+  "target_directory": "/home/npc/Playground/affan_yolo_tutorial/Converter/grunspecht_data",
+  "source_labels": {
+    
+    "0": "Live_Knot"
+  },
+  "target_labels": {
+    "0": "branch",
+    "1": "nail",
+    "2": "hole",
+    "3": "Live_Knot"
+    
+  },
+  "mapping": {
+    "0": "3"
+    
+  }
+}

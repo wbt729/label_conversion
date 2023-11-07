@@ -1,0 +1,21 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "Knots"
+    },
+    {
+      "id": 1,
+      "name": "nail"
+    },
+    {
+      "id": 2,
+      "name": "nail_hole"
+    }
+  ],
+  "info": {
+    "year": 2023,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}

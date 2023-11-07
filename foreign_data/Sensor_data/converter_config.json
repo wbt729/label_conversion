@@ -1,0 +1,17 @@
+{
+  "source_labels": {
+    "0": "branch",
+    "1": "nail",
+    "2": "hole"
+  },
+  "target_labels": {
+    "0": "hole",
+    "1": "branch",
+    "2": "nail"
+  },
+  "mapping": {
+    "0": "1",
+    "1": "2",
+    "2": "0"
+  }
+}
