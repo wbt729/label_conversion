@@ -1,75 +1,55 @@
 import json 
 import os
-
-
-#i wanna import this file to text converter
+#import this file to text_converter_v9.py
 
 class JSONReader:
 
     def __init__(self, file_name):
         self.file_name = file_name
         
-
     def read_json(self):
         try:
               with open(self.file_name, 'r') as file:
                    data = json.load(file)
-                 # to check only if the file is openning bc of wrong directory
-                 # its for us, bc if the terminal directory is not in the.. 
-                 # same folder its not gonna inform to change the directory 
-                 # print(json.dumps(data))
-                #    print("file found.. (this message is from the read_json :p)")
                    return data
 
         except FileNotFoundError:
              print(f"File not found: {self.file_name}")
-
-
-
-            
+         
     def _parse_source_dir(self):
         data = self.read_json()
         if data is not None and "source_directory" in data: 
             source_dir = data["source_directory"]
-            # print(f"source directroy: {source_dir}")          #i removed the print because i dont want it with the merged code
-            # now checking if the path exists or not 
             if os.path.exists(source_dir):
                 pass
-                    # print(f"the source directory exists {source_dir}")    #i removed the print because i dont want it with the merged code
+                   
             else:
              print(f"the source directory not exists {source_dir}")
         else: 
             print("directory source not found")
 
-
-
     def _parse_target_dir(self):
         data = self.read_json()
         if data is not None and "target_directory" in data: 
             target_dir = data["target_directory"]
-            # print(f"target directroy: {target_dir}")          #i removed the print because i dont want it with the merged code
-            ## now checking if the path exists or not 
             if os.path.exists(target_dir):
                 pass
-                    #print(f"the target directory exists {target_dir}")     #i removed the print because i dont want it with the merged code
+
             else:
              print(f"the target directory not exists {target_dir}")
         else: 
             print("target directory not found")
 
-
     def _parse_source_labels(self):
         data = self.read_json()
         if data is not None and "source_labels" in data: 
             source_labels = data.get("source_labels", {})
-            #seen_labels = set()
-            #print("source labels found")                       #i removed the print because i dont want it with the merged code
-            # print(f"{source_labels}")
+           
                                             #######missing labels
             missing_value = [key for key, value in source_labels.items() if not value ]
             if not missing_value:
                 pass
-                #print("all values in 'source_labels' are defined.")            #i removed the print because i dont want it with the merged code
+                
             else:
                  print("Source Labels is missing.")  
                                             ######3 unique labels
@@ -83,14 +63,12 @@ class JSONReader:
             
             if not non_unique_labels_source_labels:
                 pass
-                #print("All labels in 'Source_labels' are Unique")          #i removed the print because i dont want it with the merged code
-
+                
             else:
                 print("Non-unique Labels in Source directory: ",non_unique_labels_source_labels)
 
         else: 
             print("source labels not found")
-
 
     def _parse_target_labels(self):
         data = self.read_json()
@@ -119,7 +97,7 @@ class JSONReader:
 
             if not missing_or_duplicate_target_keys and not missing_or_duplicate_target_labels:
                 pass
-                #print("All keys and labels in 'target_labels' are correct.")       #i removed the print because i dont want it with the merged code
+                
             else:
                 if missing_or_duplicate_target_keys:
                     print("Key errors:")
@@ -131,7 +109,6 @@ class JSONReader:
                         print(error)
         else: 
             print("target labels not found")
-
 
     def _parse_mapping(self):
         data = self.read_json()
@@ -158,7 +135,7 @@ class JSONReader:
 
             if not missing_or_duplicate_key1_mapping and not missing_or_duplicate_key2_mapping:
                 pass
-                #print("All labels and keys in 'mapping' are correct.")         #i removed the print because i dont want it with the merged code
+                
             else:
                 if missing_or_duplicate_key1_mapping:
                     print("Source Key errors:")
@@ -170,16 +147,3 @@ class JSONReader:
                         print(error)
         else: 
             print("mapping not found")
-
-
-
-
-   
-# # running all the functions
-# json_reader = JSONReader('Configuration.json')
-# json_reader.read_json()
-# json_reader._parse_source_dir()
-# json_reader._parse_target_dir()
-# json_reader._parse_source_labels()
-# json_reader._parse_target_labels()
-# json_reader._parse_mapping()
