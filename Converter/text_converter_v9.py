@@ -1,11 +1,11 @@
 import os
 import shutil
 import json
-from converter_final import JSONReader  # Importing the JSONReader class
+from check_json import JSONReader  # Importing the JSONReader class
 
 
-# Specify the path to the GLES directory
-gles_folder = '/Users/syedaffaniqbal/Desktop/try_home_office/GLES'  
+# Specify the path to for imported_data 
+imported_data = 'insert the directory of the imported_data '  # fill the code here
 
 # Function to find and load the JSON configuration file
 def find_and_load_config_file(subfolder_path):
@@ -17,52 +17,33 @@ def find_and_load_config_file(subfolder_path):
     else:
         return None
 
-
-
-
-
 #Read th JSON configuration file,process the data 
 #so that i can approach subfolders..
 def process_data_from_config(source_folder, gles_folder):
+    successful_conversion = False 
     for subfolder in os.listdir(source_folder):
         subfolder_path = os.path.join(source_folder, subfolder)
         if os.path.isdir(subfolder_path):
             config_data = find_and_load_config_file(subfolder_path)
 
             if config_data:
-
-
                 json_reader = JSONReader(os.path.join(subfolder_path, 'Configuration.json'))
                 json_reader.read_json()
-                json_reader._parse_source_dir()
-                json_reader._parse_target_dir()
-                json_reader._parse_source_labels()
-                json_reader._parse_target_labels()
-                json_reader._parse_mapping()
-
-                # json_reader = JSONReader('Configuration.json')
-                # json_reader = json_reader.read_json()
-                # json_reader._parse_source_dir()
-                # json_reader._parse_target_dir()
-                # json_reader._parse_source_labels()
-                # json_reader._parse_target_labels()
-                # json_reader._parse_mapping()       
-
-
+                if not json_reader._parse_source_dir() and \
+                        json_reader._parse_target_dir() and \
+                        json_reader._parse_source_labels() and \
+                        json_reader._parse_target_labels() and \
+                        json_reader._parse_mapping():
+                            print(f"Skipping folder {subfolder} due to JSON errors.")
+                            continue
 
                 # Extract data frm json fiel
                 source_dir = os.path.join(subfolder_path, 'data')  # Adjust source directory as needed
-                # target_dir = config_data["target_directory"]
-                # source_labels = config_data["source_labels"]
-                # target_labels = config_data["target_labels"]
-
-                #i can skip these statements but they can be usefull..
-
+               
                 mapping = config_data["mapping"]
 
                 # Create a new directory within the GLES directory with the specified folder name
                 # to be sure about the data and dont mix up data
-                #shall i also include the date in the folder name??
                 new_folder_name = f"{subfolder}_converted" 
                 new_destination = os.path.join(gles_folder, new_folder_name)
                 os.makedirs(new_destination, exist_ok=True)
@@ -78,13 +59,12 @@ def process_data_from_config(source_folder, gles_folder):
                         shutil.copy(source_file_path, new_destination)  # Copy files to the new folder
 
                 # Read and write text files in the new folder, updating the keys according to the mapping in the JSON file
-                #got this code from youtube..
                 for file in os.listdir(new_destination):
                     file_path = os.path.join(new_destination, file)
-                    if file.endswith('.txt'):  # I can chage it if the annotation is not in txt format
+                    if file.endswith('.txt'):  #chage it if the annotation is not in txt format
                         with open(file_path, 'r') as f:
                             lines = f.readlines()
-            # working..
+            
                         with open(file_path, 'w') as f:
                             for line in lines:
                                 line_data = line.split()
@@ -99,13 +79,18 @@ def process_data_from_config(source_folder, gles_folder):
                                         f.write(line)
                                 else:
                                     f.write(line)
-
+        successful_conversion = True
         print(f"Check json on {subfolder} completed")
-    print("Successfully converted")
+        
+    if successful_conversion:
+        print("Successfully converted")
+    else:
+        print("No folders were successfully converted.")
 
-#i need an else statement too if the file not found but im thing to merge the Configuration_check_file too!
 
-#idea is to make 2 file and import the Configuration_check_file in this code... (working)
 
 # Calling  te function to read JSON files in subfolders
-process_data_from_config('/Users/syedaffaniqbal/Desktop/try_home_office/foreign_data', gles_folder)
+#enter the directory for foreign data folder (where you wanna make copies of text files)
+foreign_folder = 'insert the foreign directory'  #fill the code here
+
+process_data_from_config(foreign_folder, imported_data)
